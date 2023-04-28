@@ -110,6 +110,7 @@ public class Connect4Server {
     }
 
     public static void checkHorizontal(int[][] board) {
+        int nOfMatchingConsecutiveValues = 0;
 
         // ...To implement.
     }
@@ -118,6 +119,7 @@ public class Connect4Server {
         int nOfMatchingConsecutiveValues = 0;
 
         for(int i = 0; i < COLUMNS; i++) {
+            if(nOfMatchingConsecutiveValues == 4) break;
             if(board[i][5] == 0) continue;
 
             nOfMatchingConsecutiveValues = 0;
@@ -125,15 +127,17 @@ public class Connect4Server {
             for(int j = (ROWS - 1); j >= 0 ; j--) {
                 if(board[i][j] == 0) continue;
                 try {
-                    if (board[i][j] == board[i][j]) {
-                        nOfMatchingConsecutiveValues++;
+                    if(nOfMatchingConsecutiveValues == 4) break;
+
+                    if (board[i][j] != board[i][j - 1]) {
                         if(nOfMatchingConsecutiveValues == 4) break;
-                    } else {
-                        if(board[i][j-1] == 0) continue;
                         nOfMatchingConsecutiveValues = 0;
+                    } else {
+                        nOfMatchingConsecutiveValues++;
                     }
                 } catch (Exception ignored) {
                 }
+                if(nOfMatchingConsecutiveValues == 4) break;
             }
         }
 
