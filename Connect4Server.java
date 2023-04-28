@@ -2,8 +2,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Connect4Server {
-    public static final int ROWS = 7;
-    public static final int COLUMNS = 6;
+    public static final int ROWS = 6;
+    public static final int COLUMNS = 7;
     public static final char YELLOW = 'Y';
     public static final char BLUE = 'B';
 
@@ -11,18 +11,16 @@ public class Connect4Server {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
 
-        final int[][] board = new int[ROWS][COLUMNS];
+        final int[][] board = new int[COLUMNS][ROWS];
 
-        for(int i = 0; i < ROWS; i++) {
-            for(int j = 0; j < COLUMNS; j++) {
+        for(int i = 0; i < COLUMNS; i++) {
+            for(int j = 0; j < ROWS; j++) {
                 board[i][j] = 0;
             }
         }
 //        String b = "";
 
-        boolean gameRunning = true;
-
-        while(gameRunning) {
+        while(true) {
             buildBoard(board);
 
             System.out.print("Provide the row (1 to 7) to put a number in or type 8 to end the game: ");
@@ -34,7 +32,7 @@ public class Connect4Server {
                 break;
             }
             putIntoBoard(board, chosen_row, 1);
-
+            checkVertical(board);
         }
 
 
@@ -71,8 +69,8 @@ public class Connect4Server {
     public static void buildBoard(int[][] board) {
         String b = "";
 
-        for (int i = 0; i < COLUMNS; i++) {
-            for(int j = 0; j < ROWS; j++) {
+        for (int i = 0; i < ROWS; i++) {
+            for(int j = 0; j < COLUMNS; j++) {
                 b += "|";
                 if(board[j][i] == 0) {
                     b += " ";
@@ -93,7 +91,7 @@ public class Connect4Server {
         if(board[row][0] != 0) { // If the first value of the row is anything other than zero, then there is no need to run the loop.
             System.out.println("Row is full. Pick another.");
         } else {
-            for(int i = (COLUMNS - 1); i >= 0; i--) {
+            for(int i = (ROWS - 1); i >= 0; i--) {
                 if(board[row][i] == 0) {
                     board[row][i] = value;
                     break;
@@ -106,6 +104,47 @@ public class Connect4Server {
     }
 
     public static void winCheck(int[][] board) {
+        checkHorizontal(board);
+        checkVertical(board);
+        checkDiagonal(board);
+    }
 
+    public static void checkHorizontal(int[][] board) {
+
+        // ...To implement.
+    }
+
+    public static void checkVertical(int[][] board) {
+        int nOfMatchingConsecutiveValues = 0;
+
+        for(int i = 0; i < COLUMNS; i++) {
+            if(board[i][5] == 0) continue;
+
+            nOfMatchingConsecutiveValues = 0;
+
+            for(int j = (ROWS - 1); j >= 0 ; j--) {
+                if(board[i][j] == 0) continue;
+                try {
+                    if (board[i][j] == board[i][j]) {
+                        nOfMatchingConsecutiveValues++;
+                        if(nOfMatchingConsecutiveValues == 4) break;
+                    } else {
+                        if(board[i][j-1] == 0) continue;
+                        nOfMatchingConsecutiveValues = 0;
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+        }
+
+        if(nOfMatchingConsecutiveValues == 4) {
+            System.out.println("Win!");
+        }
+
+    }
+
+    public static void checkDiagonal(int[][] board) {
+
+        // ...To implement.
     }
 }
