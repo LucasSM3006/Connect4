@@ -103,25 +103,37 @@ public class Connect4Server {
     }
 
     public static boolean winCheck(int[][] board) {
-        return checkVertical(board);
+        boolean v = checkVertical(board);
+        boolean h = checkHorizontal(board);
+
+        if(v || h) return true;
+        return false;
     }
 
     public static boolean checkHorizontal(int[][] board) {
         int nOfMatchingConsecutiveValues = 0;
 
         for(int i = (ROWS - 1); i >= 0; i--) {
-            
             if(nOfMatchingConsecutiveValues >= 4) break;
 
             for(int j = 0; j < COLUMNS; j++) {
                 if(board[j][i] == 0) continue;
-//              if(nOfMatchingConsecutiveValues >= 4) break;
-                System.out.println("Matrix: ["+j+"]["+i+"]");
+                if(nOfMatchingConsecutiveValues >= 4) break;
+
+                try {
+                    if (board[j][i] == board[j + 1][i]) {
+                        if (nOfMatchingConsecutiveValues == 0) nOfMatchingConsecutiveValues++;
+                        nOfMatchingConsecutiveValues = nOfMatchingConsecutiveValues + 1;
+                    } else {
+                        nOfMatchingConsecutiveValues = 0;
+                    }
+                } catch (Exception ignored) {
+
+                }
             }
         }
 
-        return true;
-        // ...To implement.
+        return (nOfMatchingConsecutiveValues >= 4);
     }
 
     public static boolean checkVertical(int[][] board) {
@@ -147,14 +159,10 @@ public class Connect4Server {
                 } catch (Exception ignored) {
 
                 }
-
             }
         }
 
-        if(nOfMatchingConsecutiveValues >= 4) {
-            return true;
-        }
-        return false;
+        return (nOfMatchingConsecutiveValues >= 4);
     }
 
     public static boolean checkDiagonal(int[][] board) {
