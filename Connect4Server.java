@@ -20,6 +20,8 @@ public class Connect4Server {
             }
         }
 
+        //checkHorizontal(board);
+
         String turn = "Yellow";
         boolean gameWon = false;
 
@@ -52,6 +54,7 @@ public class Connect4Server {
                 else turn = "Yellow";
                 break;
             }
+
             else if(PLAYS >= 42) {
                 gameWon = true;
             }
@@ -97,8 +100,6 @@ public class Connect4Server {
             System.out.println("Placed value into row.");
             PLAYS++;
         }
-
-        //return board;
     }
 
     public static boolean winCheck(int[][] board) {
@@ -107,6 +108,17 @@ public class Connect4Server {
 
     public static boolean checkHorizontal(int[][] board) {
         int nOfMatchingConsecutiveValues = 0;
+
+        for(int i = (ROWS - 1); i >= 0; i--) {
+            
+            if(nOfMatchingConsecutiveValues >= 4) break;
+
+            for(int j = 0; j < COLUMNS; j++) {
+                if(board[j][i] == 0) continue;
+//              if(nOfMatchingConsecutiveValues >= 4) break;
+                System.out.println("Matrix: ["+j+"]["+i+"]");
+            }
+        }
 
         return true;
         // ...To implement.
