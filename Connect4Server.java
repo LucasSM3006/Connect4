@@ -105,8 +105,9 @@ public class Connect4Server {
     public static boolean winCheck(int[][] board) {
         boolean v = checkVertical(board);
         boolean h = checkHorizontal(board);
+        boolean d = checkDiagonals(board);
 
-        if(v || h) return true;
+        if(v || h || d) return true;
         return false;
     }
 
@@ -166,8 +167,35 @@ public class Connect4Server {
         return (nOfMatchingConsecutiveValues >= 4);
     }
 
-    public static boolean checkDiagonal(int[][] board) {
-        return true;
+    public static boolean checkDiagonals(int[][] board) {
+//        checkDiagonalLeftToRight(board);
+//        c/heckDiagonalRightToLeft(board);
+
+        return (checkDiagonalLeftToRight(board));
         // ...To implement.
+    }
+
+    public static boolean checkDiagonalLeftToRight(int[][] board) {
+        boolean matched4 = false;
+
+        // Lock the column, move row. Bottom of matrix is column 5. First row of matrix is 0.
+        for(int i = 0; i < 4; i++) {
+            if(matched4) break;
+            for(int j = 5; j > 2 ;j--) {
+                if(board[i][j] == 0) continue;
+                if(board[i][j] == board[i+1][j-1] && board[i][j] == board[i+2][j-2] && board[i][j] == board[i+3][j-3]) {
+                    matched4 = true;
+                    break;
+                }
+            }
+        }
+
+        return(matched4);
+    }
+
+    public static boolean checkDiagonalRightToLeft(int[][] board) {
+        int nOfMatchingConsecutiveValues = 0;
+
+        return(nOfMatchingConsecutiveValues >= 4);
     }
 }
