@@ -115,6 +115,7 @@ public class Connect4Server {
 
         for(int i = (ROWS - 1); i >= 0; i--) {
             if(nOfMatchingConsecutiveValues >= 4) break;
+            nOfMatchingConsecutiveValues = 0;
 
             for(int j = 0; j < COLUMNS; j++) {
                 if(board[j][i] == 0) continue;
