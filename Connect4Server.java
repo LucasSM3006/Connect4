@@ -112,59 +112,41 @@ public class Connect4Server {
     }
 
     public static boolean checkHorizontal(int[][] board) {
-        int nOfMatchingConsecutiveValues = 0;
+        boolean matched4 = false;
 
-        for(int i = (ROWS - 1); i >= 0; i--) {
-            if(nOfMatchingConsecutiveValues >= 4) break;
-            nOfMatchingConsecutiveValues = 0;
-
-            for(int j = 0; j < COLUMNS; j++) {
+        for(int i = 5; i >= 0; i--) {
+            if(matched4) break;
+            for(int j = 0; j < 4; j++) {
                 if(board[j][i] == 0) continue;
-                if(nOfMatchingConsecutiveValues >= 4) break;
-
-                try {
-                    if (board[j][i] == board[j + 1][i]) {
-                        if (nOfMatchingConsecutiveValues == 0) nOfMatchingConsecutiveValues++;
-                        nOfMatchingConsecutiveValues = nOfMatchingConsecutiveValues + 1;
-                    } else {
-                        nOfMatchingConsecutiveValues = 0;
-                    }
-                } catch (Exception ignored) {
-
+                if(board[j][i] == board[j + 1][i] &&
+                board[j][i] == board[j + 2][i] &&
+                board[j][i] == board[j + 3][i]) {
+                    matched4 = true;
+                    break;
                 }
             }
         }
 
-        return (nOfMatchingConsecutiveValues >= 4);
+        return matched4;
     }
 
     public static boolean checkVertical(int[][] board) {
-        int nOfMatchingConsecutiveValues = 0;
+        boolean matched4 = false;
 
-        for(int i = 0; i < COLUMNS; i++) {
-            if(board[i][5] == 0) continue;
-            if(nOfMatchingConsecutiveValues >= 4) break; // No point in running the loop if the necessary value has been hit.
-            nOfMatchingConsecutiveValues = 0;
-
-            for(int j = (ROWS - 1); j >= 0 ; j--) {
-                if (board[i][j] == 0) continue;
-                if(nOfMatchingConsecutiveValues >= 4) break;
-
-                try {
-                    if(j-1 == (-1)) break;
-                    if (board[i][j] == board[i][j - 1]) {
-                        if(nOfMatchingConsecutiveValues == 0) nOfMatchingConsecutiveValues++;
-                        nOfMatchingConsecutiveValues = nOfMatchingConsecutiveValues + 1;
-                    } else {
-                        nOfMatchingConsecutiveValues = 0;
-                    }
-                } catch (Exception ignored) {
-
+        for(int i = 0; i < 7 ;i++) {
+            if(matched4) break;
+            for(int j = 5; j > 2; j--) {
+                if(board[i][j] == 0) continue;
+                if(board[i][j] == board[i][j - 1] &&
+                board[i][j] == board[i][j - 2] &&
+                board[i][j] == board[i][j - 3]) {
+                    matched4 = true;
+                    break;
                 }
             }
         }
 
-        return (nOfMatchingConsecutiveValues >= 4);
+        return(matched4);
     }
 
     public static boolean checkDiagonals(int[][] board) {
@@ -183,7 +165,9 @@ public class Connect4Server {
             if(matched4) break;
             for(int j = 5; j > 2 ;j--) {
                 if(board[i][j] == 0) continue;
-                if(board[i][j] == board[i+1][j-1] && board[i][j] == board[i+2][j-2] && board[i][j] == board[i+3][j-3]) {
+                if(board[i][j] == board[i+1][j-1] &&
+                board[i][j] == board[i+2][j-2] &&
+                board[i][j] == board[i+3][j-3]) {
                     matched4 = true;
                     break;
                 }
