@@ -150,11 +150,7 @@ public class Connect4Server {
     }
 
     public static boolean checkDiagonals(int[][] board) {
-//        checkDiagonalLeftToRight(board);
-//        c/heckDiagonalRightToLeft(board);
-
-        return (checkDiagonalLeftToRight(board));
-        // ...To implement.
+        return (checkDiagonalLeftToRight(board) || checkDiagonalRightToLeft(board));
     }
 
     public static boolean checkDiagonalLeftToRight(int[][] board) {
@@ -165,9 +161,9 @@ public class Connect4Server {
             if(matched4) break;
             for(int j = 5; j > 2 ;j--) {
                 if(board[i][j] == 0) continue;
-                if(board[i][j] == board[i+1][j-1] &&
-                board[i][j] == board[i+2][j-2] &&
-                board[i][j] == board[i+3][j-3]) {
+                if(board[i][j] == board[i + 1][j - 1] &&
+                board[i][j] == board[i + 2][j - 2] &&
+                board[i][j] == board[i + 3][j - 3]) {
                     matched4 = true;
                     break;
                 }
@@ -178,8 +174,22 @@ public class Connect4Server {
     }
 
     public static boolean checkDiagonalRightToLeft(int[][] board) {
-        int nOfMatchingConsecutiveValues = 0;
+        boolean matched4 = false;
 
-        return(nOfMatchingConsecutiveValues >= 4);
+        //lock the column, move the row. Bottom of the left is 6th column, 5th row.
+        for(int i = 6; i > 2 ;i--) {
+            if(matched4) break;
+            for(int j = 5; j > 2; j--) {
+                if(board[i][j] == 0) continue;
+                if(board[i][j] == board[i - 1][j - 1] &&
+                board[i][j] == board[i - 2][j - 2] &&
+                board[i][j] == board[i - 3][j - 3]) {
+                    matched4 = true;
+                    break;
+                }
+            }
+        }
+
+        return(matched4);
     }
 }
