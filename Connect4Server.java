@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class Connect4Server {
+public class Connect4Server implements Connect4 {
     public static final int ROWS = 6;
     public static final int COLUMNS = 7;
     public static int PLAYS = 0;
