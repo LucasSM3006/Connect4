@@ -1,13 +1,13 @@
-public enum Symbols {
-    VAZIO(' ', -1),
-    Y('Y', 1),
-    B('B', 2);
+public enum Symbol {
+    EMPTY(' ', -1),
+    X('Y', 0),
+    O('B', 1);
 
     public final char label;
     public final int value;
 
-    private Symbols(char label, int value) {
+    private Symbol(char label, int value) {
         this.label = label;
         this.value = value;
-    } // fim do construtor(char, int)
+    }
 }
