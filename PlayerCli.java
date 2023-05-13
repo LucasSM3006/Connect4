@@ -4,110 +4,109 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 public class PlayerCli extends UnicastRemoteObject implements Player {
-    private JogoDaVelha server;
-    private Simbolo simbolo;
+    private Connect4 server;
+    private Symbol symbol;
 
-    public JogadorCli() throws RemoteException {
+    public PlayerCli() throws RemoteException {
         try {
-            this.server = (JogoDaVelha) Naming.lookup(JogoDaVelha.URL_SERVER);
+            this.server = (Connect4) Naming.lookup(Connect4.URL_SERVER);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
         }
-    } // fim do construtor
+    }
 
     public static void main(String[] args) {
-        System.out.println("=== Bem-vindo ao Jogo da Velha com RMI ===\n");
+        System.out.println("=== Bem-vindo ao Connect - 4 com RMI ===\n");
         try {
-            JogadorCli client = new JogadorCli();
-            client.executar();
+            PlayerCli client = new PlayerCli();
+            client.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } // fim do metodo main(String[])
+    } // main(String[] args)
 
     @Override
-    public void aguardarOponente() throws RemoteException {
+    public void waitForOpponent() throws RemoteException {
         System.out.println("Aguardando oponente...\n");
-    } // fim do metodo aguardarOponente()
+    } // waitForOpponent
 
     @Override
-    public void iniciarPartida(Tabuleiro tabuleiro, Simbolo simbolo) throws RemoteException {
-        this.simbolo = simbolo;
-        System.out.printf("Partida Iniciada. Você será o \"%c\".\n\n", this.simbolo.rotulo);
+    public void startMatch(Board board, Symbol symbol) throws RemoteException {
+        this.symbol = symbol;
+        System.out.printf("Partida Iniciada. Você será o \"%c\".\n\n", this.symbol.label);
 
-        iniciarTurno(tabuleiro);
-    } // fim do metodo iniciarPartida(Tabuleiro, Simbolo)
+        beginTurn(board);
+    } // startMatch(Board, Symbol)
 
     @Override
-    public void iniciarTurno(Tabuleiro tabuleiro) throws RemoteException {
-        System.out.println(tabuleiro + "\n");
-        if (this.simbolo == tabuleiro.getTurno()) {
-            realizarJogada();
-            encerrarTurno();
+    public void beginTurn(Board board) throws RemoteException {
+        System.out.println(board + "\n");
+        if (this.symbol == board.getTurn()) {
+            play();
+            endTurn();
         } else {
             System.out.println("Oponente jogando...");
         }
-    } // fim do metodo iniciarTurno(Tabuleiro, Simbolo)
+    } // beginTurn(Board)
 
     @Override
-    public void encerrarPartida(Tabuleiro tabuleiro) throws RemoteException {
-        if (tabuleiro.getVencedor() == this.simbolo) {
+    public void endMatch(Board board) throws RemoteException {
+        if (board.getWinner() == this.symbol) {
             System.out.println("Parabéns! Você venceu!\n\n");
         } else {
             System.out.println("Que pena, você perdeu.\n\n");
         }
-    } // fim do metodo encerrarPartida(Tabuleiro)
+    } // endMatch(Board)
 
-    private void executar() {
+    private void execute() {
         try {
-            this.server.registrar(this);
+            this.server.register(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } // fim do metodo executar()
+    } // execute
 
-    private void realizarJogada() {
+    private void play() {
         try {
-            boolean valido = true;
+            boolean valid = true;
             do {
-                int linha = pedirPosicao(true);
-                int coluna = pedirPosicao(false);
+                int column = getPosition();
 
-                valido = this.server.marcar(linha, coluna);
-                if (!valido) {
-                    System.out.printf("Posição %d, %d já está marcada!\n\n", linha, coluna);
+                valid = this.server.mark(column);
+                if (!valid) {
+                    System.out.printf("Coluna %d cheia!\n\n", column);
                 }
-            } while (!valido);
+            } while (!valid);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } // fim do metodo realizarJogada()
+    } // play
 
-    private int pedirPosicao(boolean linha) {
-        int posicao = -1;
+    private int getPosition() {
+        int position = -1;
 
         Scanner scanner = new Scanner(System.in);
-        boolean valido = true;
-        String eixo = (linha) ? "linha" : "coluna";
+        boolean valid = true;
+
         do {
-            System.out.printf("Informe a %s (entre 1 e 3): ", eixo);
-            posicao = scanner.nextInt();
+            System.out.print("Informe a coluna (entre 1 e 7): ");
+            position = scanner.nextInt();
 
-            valido = posicao >= 1 && posicao <= 3;
-            if (!valido) {
-                System.out.printf("Posição %d é inválida!\n\n", posicao);
+            valid = position >= 1 && position <= 7;
+            if (!valid) {
+                System.out.printf("Posição %d é inválida!\n\n", position);
             }
-        } while (!valido);
+        } while (!valid);
 
-        return posicao;
-    } // fim do metodo pedirPosicao(boolean)
+        return position;
+    } // getPosition
 
-    private void encerrarTurno() {
+    private void endTurn() {
         try {
-            this.server.encerrarTurno(this.simbolo);
+            this.server.endTurn(this.symbol);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } // fim do metodo encerrarTurno()
-}
+    } // endTurn()
+} // PlayerCli
