@@ -9,7 +9,7 @@ public class Board implements Serializable {
 
     public Board() {
         state = new Symbol[COLUMNS][ROWS];
-        turn = Symbol.X;
+        turn = Symbol.Y;
         winner = Symbol.EMPTY;
 
         reset();
@@ -41,7 +41,7 @@ public class Board implements Serializable {
                 if(this.state[column][i] == Symbol.EMPTY) {
                     this.state[column][i] = this.turn;
                     checkWinner();
-                    this.turn = (this.turn == Symbol.X) ? Symbol.O : Symbol.X;
+                    this.turn = (this.turn == Symbol.Y) ? Symbol.B : Symbol.Y;
                     break;
                 }
             }
