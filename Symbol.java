@@ -1,7 +1,7 @@
 public enum Symbol {
     EMPTY(' ', -1),
-    X('Y', 0),
-    O('B', 1);
+    Y('Y', 0),
+    B('B', 1);
 
     public final char label;
     public final int value;
