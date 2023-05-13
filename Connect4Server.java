@@ -48,12 +48,12 @@ public class Connect4Server extends UnicastRemoteObject implements Connect4 {
                 player.endMatch(this.board);
             }
         } else {
-            if (symbol == Symbol.X) {
-                this.players.get(Symbol.X.value).beginTurn(this.board);
-                this.players.get(Symbol.O.value).beginTurn(this.board);
+            if (symbol == Symbol.Y) {
+                this.players.get(Symbol.Y.value).beginTurn(this.board);
+                this.players.get(Symbol.B.value).beginTurn(this.board);
             } else {
-                this.players.get(Symbol.O.value).beginTurn(this.board);
-                this.players.get(Symbol.X.value).beginTurn(this.board);
+                this.players.get(Symbol.B.value).beginTurn(this.board);
+                this.players.get(Symbol.Y.value).beginTurn(this.board);
             }
         }
     } // endTurn(Symbol)
@@ -71,11 +71,11 @@ public class Connect4Server extends UnicastRemoteObject implements Connect4 {
     private void startMatch() {
         try {
             if (this.players.size() == 1) {
-                this.players.get(Symbol.X.value).waitForOpponent();
+                this.players.get(Symbol.Y.value).waitForOpponent();
             } else {
                 // 2 jogadores; iniciar o jogo
-                this.players.get(Symbol.O.value).startMatch(this.board, Symbol.O);
-                this.players.get(Symbol.X.value).startMatch(this.board, Symbol.X);
+                this.players.get(Symbol.B.value).startMatch(this.board, Symbol.B);
+                this.players.get(Symbol.Y.value).startMatch(this.board, Symbol.Y);
             }
         } catch (Exception e) {
             e.printStackTrace();
