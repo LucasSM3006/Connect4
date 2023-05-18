@@ -53,8 +53,10 @@ public class PlayerCli extends UnicastRemoteObject implements Player {
     @Override
     public void endMatch(Board board) throws RemoteException {
         if (board.getWinner() == this.symbol) {
+            System.out.println(board);
             System.out.println("Parabéns! Você venceu!\n\n");
         } else {
+            System.out.println(board);
             System.out.println("Que pena, você perdeu.\n\n");
         }
     } // endMatch(Board)
@@ -69,7 +71,7 @@ public class PlayerCli extends UnicastRemoteObject implements Player {
 
     private void play() {
         try {
-            boolean valid = true;
+            boolean valid;
             do {
                 int column = getPosition();
 
@@ -84,10 +86,10 @@ public class PlayerCli extends UnicastRemoteObject implements Player {
     } // play
 
     private int getPosition() {
-        int position = -1;
+        int position;
 
         Scanner scanner = new Scanner(System.in);
-        boolean valid = true;
+        boolean valid;
 
         do {
             System.out.print("Informe a coluna (entre 1 e 7): ");

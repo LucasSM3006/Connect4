@@ -73,7 +73,6 @@ public class Connect4Server extends UnicastRemoteObject implements Connect4 {
             if (this.players.size() == 1) {
                 this.players.get(Symbol.Y.value).waitForOpponent();
             } else {
-                // 2 jogadores; iniciar o jogo
                 this.players.get(Symbol.B.value).startMatch(this.board, Symbol.B);
                 this.players.get(Symbol.Y.value).startMatch(this.board, Symbol.Y);
             }
